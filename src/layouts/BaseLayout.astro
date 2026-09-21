@@ -16,7 +16,7 @@ const {
   image = '/images/logo_p_gramadotche.png',
   canonical,
   noindex = false,
-  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'RLM Turismo Gramado'],
+  keywords = ['Gramado', 'Canela', 'Serra Gaúcha', 'turismo', 'translado', 'passeios', 'ingressos', 'Gramado Tchê Turismo'],
 } = Astro.props;
 
 // Criar URLs de forma segura
@@ -51,7 +51,7 @@ const ogHeight =
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
-    <meta name="author" content="RLM Turismo Gramado" />
+    <meta name="author" content="Gramado Tchê Turismo" />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
     <link rel="canonical" href={canonicalURL} />
     
@@ -60,7 +60,7 @@ const ogHeight =
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content="RLM Turismo Gramado" />
+    <meta property="og:site_name" content="Gramado Tchê Turismo" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:locale:alternate" content="es_ES" />
@@ -91,7 +91,7 @@ const ogHeight =
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "TravelAgency",
-      "name": "RLM Turismo Gramado",
+      "name": "Gramado Tchê Turismo",
       "alternateName": "Guia Turismo Serra Gaúcha",
       "description": description,
       "url": canonicalURL,
@@ -134,7 +134,7 @@ const ogHeight =
     
     <style>
       :root {
-        /* Paleta RLM Turismo — baseada na logo
+        /* Paleta Gramado Tchê Turismo — baseada na logo
            Primary: AMARO/TERRA dos vales (suave, fundo dourado — vinícolas / Serra Gaúcha)
            Accent:  DOURADO/ÂMBAR vibrante (borda + "TURISMO" da logo)
            Dark:    PRETO (textos RLM + GRAMADO da logo) */
