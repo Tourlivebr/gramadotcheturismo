@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 
 // Criar URLs de forma segura
-const baseUrl = Astro.site?.toString() || 'https://rlmturismogramado.vercel.app/';
+const baseUrl = Astro.site?.toString() || 'https://gramadotcheturismo.vercel.app/';
 const canonicalURL = canonical || new URL(Astro.url.pathname, baseUrl).toString();
 const socialImage = new URL(image, baseUrl).toString();
 
@@ -75,8 +75,8 @@ const ogHeight =
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@rlmturismogramado" />
-    <meta name="twitter:creator" content="@rlmturismogramado" />
+    <meta name="twitter:site" content="@gramadotcheturismo" />
+    <meta name="twitter:creator" content="@gramadotcheturismo" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -126,8 +126,8 @@ const ogHeight =
       ],
       "priceRange": "R$",
       "sameAs": [
-        "https://www.instagram.com/rlmturismogramado//",
-        "https://www.facebook.com/profile.php?id=61564872360952"
+        "https://www.instagram.com/gramadotcheturismo//",
+        "https://www.facebook.com/gramadotcheturismo"
       ]
     })} />
 
