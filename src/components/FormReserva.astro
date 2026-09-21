@@ -64,7 +64,7 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
   data-eh-transfer-ida-volta={ehTransferIdaVolta ? 'true' : 'false'}
 >
   {(passeioDuracao || passeioHorarios || passeioCategoria) && (
-  
+
     <h2 class="text-2xl font-bold mb-4">Faça sua Reserva:</h2>
     <div class="space-y-4 mb-5">
       {passeioDuracao && (
@@ -88,123 +88,142 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
     </div>
   )}
 
-  <!-- Seletor / Exibição de preço -->
-  <div class="mb-5">
-    {temFaixasCompletas && passeioFaixasCompletas ? (
-      <div class="grid grid-cols-2 gap-2 mb-4">
-        {passeioFaixasCompletas.map((fx, idx) => (
-          <button
-            type="button"
-            data-faixa-idx={idx}
-            class={`faixa-completa-btn sidebar-faixa-btn border-2 rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ${idx === 0 ? 'border-primary-500 ring-2 ring-primary-500 bg-white' : 'border-gray-200 bg-white'}`}
-          >
-            <div class="text-gray-600 text-xs font-medium mb-1">{fx.label}</div>
-            <div class="text-xl font-bold text-primary-600">{formatarReal(fx.preco)}</div>
-          </button>
-        ))}
-      </div>
-    ) : (passeioTemFaixas && passeioPreco1 !== undefined && passeioPreco2 !== undefined && passeioLabel1 && passeioLabel2) ? (
-      <div class="grid grid-cols-2 gap-2 mb-4">
-        <button type="button" data-faixa="1" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-primary-500 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ring-2 ring-primary-500">
-          <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel1}</div>
-          <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco1)}</div>
-        </button>
-        <button type="button" data-faixa="2" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-gray-200 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md">
-          <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel2}</div>
-          <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco2)}</div>
-        </button>
-      </div>
-    ) : null}
-
-    <div class="text-center">
-      <div class="text-gray-600 text-sm mb-1 form-reserva-label">
-        {temFaixasCompletas || passeioTemFaixas ? labelInicial : passeioParcelas}
-      </div>
-      <div class="text-3xl font-bold text-primary-600 form-reserva-valor">
-        {formatarReal(temFaixasCompletas || passeioTemFaixas ? precoInicial : (passeioPreco ?? 0))}
-      </div>
-    </div>
-  </div>
-
   {ehTransferIdaVolta ? (
-    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`} data-modo-transfer>
+    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`} data-modo-transfer novalidate>
       <h3 class="font-bold text-lg text-gray-900">Complete sua Reserva:</h3>
 
-      <!-- Seletor de modo IDA / VOLTA / IDA+VOLTA -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Transfer:</label>
-        <div class="grid grid-cols-3 gap-2">
-          <button type="button" data-modo="ida" class="transfer-modo-btn border-2 border-primary-500 bg-white rounded-lg py-2 text-sm font-bold text-primary-700 shadow-sm ring-2 ring-primary-500 transition-all hover:shadow-md">
-            Somente IDA
-          </button>
-          <button type="button" data-modo="volta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
-            Somente VOLTA
-          </button>
-          <button type="button" data-modo="idavolta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
-            IDA e VOLTA
-          </button>
+      <input type="hidden" name="formPrecoCalculado" value="" />
+      <input type="hidden" name="formFaixaAplicada" value="" />
+      <input type="hidden" name="formModoTransfer" value="ida" />
+      <input type="hidden" name="formPassageirosNum" value="1" />
+
+      {/* Resumo automático (substitui os botões de preço) */}
+      <div class="border-2 border-primary-100 bg-gradient-to-br from-primary-50/70 to-white rounded-xl p-4 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-gray-600 text-sm font-medium">Tipo de transfer:</span>
+          <span class="font-bold text-gray-900 text-sm tr-transfer-modo">Somente IDA</span>
         </div>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-600 text-sm font-medium">Quantidade:</span>
+          <span class="font-bold text-gray-900 text-sm tr-transfer-qtd">1 passageiro</span>
+        </div>
+        <div class="flex items-center justify-between pt-2 border-t border-primary-100">
+          <span class="text-gray-700 text-base font-semibold">Valor total:</span>
+          <span class="text-2xl font-bold text-primary-600 tr-transfer-valor">R$ 350,00</span>
+        </div>
+        <p class="text-xs text-red-600 hidden tr-transfer-msg-erro">Este transfer permite reservas de 1 a 6 passageiros.</p>
       </div>
 
-      <!-- DADOS DA IDA (sempre visíveis) -->
-      <div class="border border-gray-200 rounded-xl p-4 bg-blue-50/40 space-y-4" data-section-ida>
-        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📋 DADOS DA IDA</h4>
+      <!-- DADOS PESSOAIS (sempre visíveis) -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-gray-50/60 space-y-4">
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📋 DADOS PESSOAIS</h4>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Nome:</label>
-          <input type="text" required name="formNome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Nome completo" value="GEZICA APARECIDA NUNES" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nome completo:</label>
+          <input type="text" required name="formNome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Seu nome completo" />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Número de passageiros:</label>
-          <input type="number" required min="1" max="30" name="formPassageiros" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: 3" value="3" />
+          <input type="number" required min="1" max="6" step="1" name="formPassageiros" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: 3" />
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Telefone / WhatsApp:</label>
-          <input type="tel" required name="formWhats" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="(00) 00000-0000" value="(19) 19 97101-0990" />
+          <input type="tel" required name="formWhats" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="(00) 00000-0000" />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Passeio:</label>
-          <input type="text" readonly name="formPasseio" class="w-full px-3 py-2 border border-gray-200 bg-gray-50 rounded-lg text-gray-700 cursor-not-allowed" value={passeioNome} />
+          <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de transfer:</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-modo="ida" class="transfer-modo-btn border-2 border-primary-500 bg-white rounded-lg py-2 text-sm font-bold text-primary-700 shadow-sm ring-2 ring-primary-500 transition-all hover:shadow-md">
+              Somente IDA
+            </button>
+            <button type="button" data-modo="volta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
+              Somente VOLTA
+            </button>
+            <button type="button" data-modo="idavolta" class="transfer-modo-btn border-2 border-gray-200 bg-white rounded-lg py-2 text-sm font-bold text-gray-700 shadow-sm transition-all hover:shadow-md">
+              IDA e VOLTA
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- DADOS DA IDA -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-blue-50/40 space-y-4" data-section-ida>
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📍 DADOS DA IDA — AEROPORTO DE PORTO ALEGRE → GRAMADO/CANELA</h4>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Data de chegada:</label>
-            <input type="date" required name="formDataChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" value="2026-09-12" />
+            <input type="date" required name="formDataChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Horário:</label>
-            <input type="time" required name="formHoraChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" value="08:00" />
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário previsto de chegada:</label>
+            <input type="time" required name="formHoraChegada" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
           </div>
         </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Número do voo:</label>
-          <input type="text" name="formVooIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AD 1234 - AZUL" value="AD 2603 - AZUL" />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Local de hospedagem:</label>
-          <textarea required name="formHospedagem" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none bg-white" placeholder="Nome do hotel e endereço completo">Hotel Laghetto Vivace&#10;Av Julio De Castilhos, 602 - Centro, Canela - Rs, Rio Grande Do Sul, Brasil</textarea>
-        </div>
-      </div>
-
-      <!-- DADOS DA VOLTA (oculto por padrão, exibido via JS se modo=volta ou idavolta) -->
-      <div class="border border-gray-200 rounded-xl p-4 bg-amber-50/60 space-y-4 hidden" data-section-volta>
-        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📋 DADOS DA VOLTA</h4>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Dia:</label>
-            <input type="date" name="formDataVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" value="2026-09-16" />
+            <label class="block text-sm font-medium text-gray-700 mb-1">Número do voo:</label>
+            <input type="text" required name="formVooIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AD 2603" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Companhia aérea:</label>
+            <input type="text" required name="formCiaIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AZUL" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Destino em Gramado ou Canela:</label>
+            <select required name="formDestinoIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white">
+              <option value="">Selecione</option>
+              <option value="Gramado">Gramado</option>
+              <option value="Canela">Canela</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Hotel/pousada ou endereço de destino:</label>
+            <input type="text" required name="formEnderecoDestinoIda" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Nome e endereço" />
+          </div>
+        </div>
+      </div>
+
+      <!-- DADOS DA VOLTA -->
+      <div class="border border-gray-200 rounded-xl p-4 bg-amber-50/60 space-y-4 hidden" data-section-volta>
+        <h4 class="font-bold text-base text-primary-700 border-b border-gray-200 pb-2 mb-2">📍 DADOS DA VOLTA — GRAMADO/CANELA → AEROPORTO DE PORTO ALEGRE</h4>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Data do embarque:</label>
+            <input type="date" required name="formDataVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário de saída desejado:</label>
+            <input type="time" required name="formHoraSaidaVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Horário do voo:</label>
-            <input type="time" name="formHoraVooVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" value="18:00" />
+            <input type="time" required name="formHoraVooVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" />
           </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Número do voo:</label>
+            <input type="text" required name="formVooVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AD 2604" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Companhia aérea:</label>
+            <input type="text" required name="formCiaVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Ex: AZUL" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Hotel/pousada ou endereço de embarque:</label>
+          <input type="text" required name="formEnderecoEmbarqueVolta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white" placeholder="Nome e endereço" />
         </div>
       </div>
 
@@ -221,6 +240,44 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
       </button>
     </form>
   ) : (
+    <!-- Seletor / Exibição de preço (passeios padrão) -->
+    <div class="mb-5">
+      {temFaixasCompletas && passeioFaixasCompletas ? (
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          {passeioFaixasCompletas.map((fx, idx) => (
+            <button
+              type="button"
+              data-faixa-idx={idx}
+              class={`faixa-completa-btn sidebar-faixa-btn border-2 rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ${idx === 0 ? 'border-primary-500 ring-2 ring-primary-500 bg-white' : 'border-gray-200 bg-white'}`}
+            >
+              <div class="text-gray-600 text-xs font-medium mb-1">{fx.label}</div>
+              <div class="text-xl font-bold text-primary-600">{formatarReal(fx.preco)}</div>
+            </button>
+          ))}
+        </div>
+      ) : (passeioTemFaixas && passeioPreco1 !== undefined && passeioPreco2 !== undefined && passeioLabel1 && passeioLabel2) ? (
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <button type="button" data-faixa="1" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-primary-500 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ring-2 ring-primary-500">
+            <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel1}</div>
+            <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco1)}</div>
+          </button>
+          <button type="button" data-faixa="2" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-gray-200 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md">
+            <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel2}</div>
+            <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco2)}</div>
+          </button>
+        </div>
+      ) : null}
+
+      <div class="text-center">
+        <div class="text-gray-600 text-sm mb-1 form-reserva-label">
+          {temFaixasCompletas || passeioTemFaixas ? labelInicial : passeioParcelas}
+        </div>
+        <div class="text-3xl font-bold text-primary-600 form-reserva-valor">
+          {formatarReal(temFaixasCompletas || passeioTemFaixas ? precoInicial : (passeioPreco ?? 0))}
+        </div>
+      </div>
+    </div>
+
     <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`}>
       <h3 class="font-bold text-lg text-gray-900">Complete sua Reserva:</h3>
 
@@ -258,7 +315,7 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
     </form>
   )}
 
-  <a 
+  <a
     class="form-reserva-contato w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
     data-base-text={`Olá! Gostaria de mais informações sobre o ${passeioNome}.`}
     data-whatsapp-direct="true"
@@ -280,6 +337,36 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
 <script>
   const WHATSAPP = "5554996951419";
   const fmt = (v) => `R$ ${(Number(v) || 0).toFixed(2).replace('.', ',')}`;
+
+  // TABELA OFICIAL DE PREÇOS (única fonte de verdade)
+  const TABELA_TRANSFER = {
+    ida:     { faixa1: 350, faixa2: 400, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' },
+    volta:   { faixa1: 350, faixa2: 400, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' },
+    idavolta:{ faixa1: 679, faixa2: 839, labelFaixa1: '1 a 4 passageiros', labelFaixa2: '5 a 6 passageiros' }
+  } as const;
+
+  type ModoTransfer = keyof typeof TABELA_TRANSFER;
+
+  const ROTULOS_MODO: Record<ModoTransfer, string> = {
+    ida: 'Somente IDA',
+    volta: 'Somente VOLTA',
+    idavolta: 'IDA E VOLTA'
+  };
+
+  const TRAJETOS: Record<ModoTransfer, string> = {
+    ida: 'Aeroporto de Porto Alegre → Gramado/Canela',
+    volta: 'Gramado/Canela → Aeroporto de Porto Alegre',
+    idavolta: 'Aeroporto de Porto Alegre → Gramado/Canela → Aeroporto de Porto Alegre'
+  };
+
+  function calcularPrecoTransfer(modo: ModoTransfer, passageiros: number): { preco: number; faixaLabel: string; valido: boolean } {
+    const tabela = TABELA_TRANSFER[modo];
+    if (!tabela || !Number.isFinite(passageiros) || passageiros < 1 || passageiros > 6) {
+      return { preco: 0, faixaLabel: '', valido: false };
+    }
+    if (passageiros <= 4) return { preco: tabela.faixa1, faixaLabel: tabela.labelFaixa1, valido: true };
+    return { preco: tabela.faixa2, faixaLabel: tabela.labelFaixa2, valido: true };
+  }
 
   if (!(window as any).__enviarReservaGeneric) {
     (window as any).__enviarReservaGeneric = function(event: Event, passeioNome: string) {
@@ -311,52 +398,78 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
       };
 
       if (ehModoTransfer) {
-        const modoSelecionado = form.querySelector<HTMLButtonElement>('.transfer-modo-btn.border-primary-500')?.dataset.modo || 'ida';
-        const rotuloModo =
-          modoSelecionado === 'ida' ? 'Somente IDA' :
-          modoSelecionado === 'volta' ? 'Somente VOLTA' : 'IDA e VOLTA';
+        // RECALCULAR E VALIDAR antes do envio
+        const modoRaw = (el.formModoTransfer?.value as ModoTransfer) || 'ida';
+        const modo: ModoTransfer = (TABELA_TRANSFER as any)[modoRaw] ? modoRaw : 'ida';
+        const qtdRaw = Number(el.formPassageiros?.value);
+        const calc = calcularPrecoTransfer(modo, qtdRaw);
 
-        const passageiros = el.formPassageiros?.value || '';
+        if (!calc.valido) {
+          alert('Este transfer permite reservas de 1 a 6 passageiros.');
+          const inputQtd = form.querySelector<HTMLInputElement>('input[name="formPassageiros"]');
+          inputQtd?.focus();
+          return false;
+        }
+
+        // Persiste os valores recalculados
+        el.formPrecoCalculado.value = String(calc.preco);
+        el.formFaixaAplicada.value = calc.faixaLabel;
+
+        const passageiros = qtdRaw;
         const dataChegada = el.formDataChegada?.value || '';
         const horaChegada = el.formHoraChegada?.value || '';
         const vooIda = el.formVooIda?.value?.trim() || '';
-        const hospedagem = el.formHospedagem?.value?.trim() || '';
+        const ciaIda = el.formCiaIda?.value?.trim() || '';
+        const destinoIda = el.formDestinoIda?.value?.trim() || '';
+        const endDestinoIda = el.formEnderecoDestinoIda?.value?.trim() || '';
         const dataVolta = el.formDataVolta?.value || '';
+        const horaSaidaVolta = el.formHoraSaidaVolta?.value || '';
         const horaVooVolta = el.formHoraVooVolta?.value || '';
+        const vooVolta = el.formVooVolta?.value?.trim() || '';
+        const ciaVolta = el.formCiaVolta?.value?.trim() || '';
+        const endEmbarqueVolta = el.formEnderecoEmbarqueVolta?.value?.trim() || '';
+
+        const precisaIda = modo === 'ida' || modo === 'idavolta';
+        const precisaVolta = modo === 'volta' || modo === 'idavolta';
 
         const linhas = [
-          `*Nova solicitação de reserva - TRANSFER:*`,
+          '*NOVA SOLICITAÇÃO DE TRANSFER*',
           '',
-          `*Tipo de Transfer:* ${rotuloModo}`,
-          `*Passeio:* ${passeio}`,
+          `*Cliente:* ${nome}`,
+          `*WhatsApp:* ${whats}`,
+          `*Tipo de transfer:* ${ROTULOS_MODO[modo]}`,
+          `*Trajeto:* ${TRAJETOS[modo]}`,
+          `*Passageiros:* ${passageiros} ${passageiros === 1 ? 'passageiro' : 'passageiros'}`,
+          `*Faixa de preço:* ${calc.faixaLabel}`,
+          `*VALOR TOTAL:* ${fmt(calc.preco)}`,
         ];
-        if (faixaLabel && faixaValor) {
-          linhas.push(`*Faixa:* ${faixaLabel}`);
-          linhas.push(`*Valor:* ${faixaValor}`);
-        }
-        linhas.push('', '📋 *DADOS PESSOAIS:*');
-        linhas.push(`*Nome:* ${nome}`);
-        linhas.push(`*WhatsApp:* ${whats}`);
-        linhas.push(`*Número de passageiros:* ${passageiros}`);
-
-        const precisaIda = modoSelecionado === 'ida' || modoSelecionado === 'idavolta';
-        const precisaVolta = modoSelecionado === 'volta' || modoSelecionado === 'idavolta';
 
         if (precisaIda) {
-          linhas.push('', '📋 *DADOS DA IDA:*');
+          linhas.push('');
+          linhas.push('📍 *DADOS DA IDA*');
           if (dataChegada) linhas.push(`*Data de chegada:* ${formatarData(dataChegada)}`);
-          if (horaChegada) linhas.push(`*Horário:* ${horaChegada}`);
-          if (vooIda) linhas.push(`*Número do voo:* ${vooIda}`);
-          if (hospedagem) linhas.push(`*Local de hospedagem:*\n${hospedagem}`);
+          if (horaChegada) linhas.push(`*Horário de chegada:* ${horaChegada}`);
+          if (vooIda) linhas.push(`*Voo:* ${vooIda}`);
+          if (ciaIda) linhas.push(`*Companhia aérea:* ${ciaIda}`);
+          if (destinoIda) linhas.push(`*Destino:* ${destinoIda}`);
+          if (endDestinoIda) linhas.push(`*Hospedagem/endereço:* ${endDestinoIda}`);
         }
 
         if (precisaVolta) {
-          linhas.push('', '📋 *DADOS DA VOLTA:*');
-          if (dataVolta) linhas.push(`*Dia:* ${formatarData(dataVolta)}`);
+          linhas.push('');
+          linhas.push('📍 *DADOS DA VOLTA*');
+          if (dataVolta) linhas.push(`*Data do embarque:* ${formatarData(dataVolta)}`);
+          if (horaSaidaVolta) linhas.push(`*Horário de saída:* ${horaSaidaVolta}`);
           if (horaVooVolta) linhas.push(`*Horário do voo:* ${horaVooVolta}`);
+          if (vooVolta) linhas.push(`*Voo:* ${vooVolta}`);
+          if (ciaVolta) linhas.push(`*Companhia aérea:* ${ciaVolta}`);
+          if (endEmbarqueVolta) linhas.push(`*Local de embarque:* ${endEmbarqueVolta}`);
         }
 
-        if (obs) linhas.push('', `*Observação:* ${obs}`);
+        if (obs) {
+          linhas.push('');
+          linhas.push(`*Observações:* ${obs}`);
+        }
 
         const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
         window.open(url, '_blank');
@@ -383,15 +496,51 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
     };
   }
 
-  // Inicializa seletor de modo TRANSFER (IDA / VOLTA / IDA+VOLTA)
+  // ===== INICIALIZA TRANSFER (IDA/VOLTA) =====
   document.querySelectorAll('.form-reserva-root[data-eh-transfer-ida-volta="true"]').forEach(root => {
     const form = root.querySelector<HTMLFormElement>('form[data-modo-transfer]');
     if (!form) return;
+
     const sectionIda = form.querySelector<HTMLElement>('[data-section-ida]');
     const sectionVolta = form.querySelector<HTMLElement>('[data-section-volta]');
     const botoesModo = form.querySelectorAll<HTMLButtonElement>('.transfer-modo-btn');
+    const inputQtd = form.querySelector<HTMLInputElement>('input[name="formPassageiros"]');
+    const elModo = form.querySelector<HTMLInputElement>('input[name="formModoTransfer"]');
+    const elPrecoCalc = form.querySelector<HTMLInputElement>('input[name="formPrecoCalculado"]');
+    const elFaixa = form.querySelector<HTMLInputElement>('input[name="formFaixaAplicada"]');
+    const elPassNum = form.querySelector<HTMLInputElement>('input[name="formPassageirosNum"]');
 
-    const aplicarModo = (modo: string) => {
+    const rotuloModoEl = form.querySelector<HTMLElement>('.tr-transfer-modo');
+    const rotuloQtdEl = form.querySelector<HTMLElement>('.tr-transfer-qtd');
+    const rotuloValorEl = form.querySelector<HTMLElement>('.tr-transfer-valor');
+    const msgErroEl = form.querySelector<HTMLElement>('.tr-transfer-msg-erro');
+
+    const camposIdaObrigatorios = ['formDataChegada','formHoraChegada','formVooIda','formCiaIda','formDestinoIda','formEnderecoDestinoIda'];
+    const camposVoltaObrigatorios = ['formDataVolta','formHoraSaidaVolta','formHoraVooVolta','formVooVolta','formCiaVolta','formEnderecoEmbarqueVolta'];
+
+    function atualizarPreco(modo: ModoTransfer, passageiros: number) {
+      const calc = calcularPrecoTransfer(modo, passageiros);
+
+      if (rotuloModoEl) rotuloModoEl.textContent = ROTULOS_MODO[modo];
+      if (rotuloQtdEl) rotuloQtdEl.textContent = `${passageiros} ${passageiros === 1 ? 'passageiro' : 'passageiros'}`;
+
+      if (calc.valido) {
+        if (rotuloValorEl) rotuloValorEl.textContent = fmt(calc.preco);
+        if (msgErroEl) msgErroEl.classList.add('hidden');
+        if (inputQtd) inputQtd.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+      } else {
+        if (rotuloValorEl) rotuloValorEl.textContent = '--';
+        if (msgErroEl) msgErroEl.classList.remove('hidden');
+        if (inputQtd) inputQtd.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+      }
+
+      if (elPrecoCalc) elPrecoCalc.value = calc.valido ? String(calc.preco) : '';
+      if (elFaixa) elFaixa.value = calc.valido ? calc.faixaLabel : '';
+      if (elPassNum) elPassNum.value = String(passageiros);
+      if (elModo) elModo.value = modo;
+    }
+
+    function aplicarModo(modo: ModoTransfer) {
       botoesModo.forEach(b => {
         const ativo = b.dataset.modo === modo;
         b.classList.toggle('border-primary-500', ativo);
@@ -402,51 +551,62 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
         b.classList.toggle('text-gray-700', !ativo);
       });
 
+      // Seções e requireds
       if (sectionIda) {
-        if (modo === 'ida' || modo === 'idavolta') {
-          sectionIda.classList.remove('hidden');
-          sectionIda.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach(c => {
-            if (c.name === 'formNome' || c.name === 'formPassageiros' || c.name === 'formWhats' ||
-                c.name === 'formDataChegada' || c.name === 'formHoraChegada' || c.name === 'formHospedagem') {
-              c.required = true;
-            }
-          });
-        } else {
-          sectionIda.classList.add('hidden');
-          sectionIda.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach(c => {
-            if (c.name !== 'formNome' && c.name !== 'formWhats' && c.name !== 'formPasseio') {
-              c.required = false;
-            }
-          });
-        }
+        const visivel = modo === 'ida' || modo === 'idavolta';
+        sectionIda.classList.toggle('hidden', !visivel);
+        camposIdaObrigatorios.forEach(nm => {
+          const c = form.elements.namedItem(nm) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+          if (c) (c as any).required = visivel;
+        });
       }
 
       if (sectionVolta) {
-        if (modo === 'volta' || modo === 'idavolta') {
-          sectionVolta.classList.remove('hidden');
-          sectionVolta.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach(c => {
-            c.required = true;
-          });
-        } else {
-          sectionVolta.classList.add('hidden');
-          sectionVolta.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach(c => {
-            c.required = false;
-          });
-        }
+        const visivel = modo === 'volta' || modo === 'idavolta';
+        sectionVolta.classList.toggle('hidden', !visivel);
+        camposVoltaObrigatorios.forEach(nm => {
+          const c = form.elements.namedItem(nm) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+          if (c) (c as any).required = visivel;
+        });
       }
-    };
+
+      const qtd = clampQtd(Number(inputQtd?.value ?? 1));
+      atualizarPreco(modo, qtd);
+    }
+
+    function clampQtd(v: number): number {
+      if (!Number.isFinite(v)) return 1;
+      if (v < 1) return 1;
+      if (v > 6) return 6;
+      return Math.floor(v);
+    }
 
     botoesModo.forEach(btn => {
       btn.addEventListener('click', () => {
-        const modo = btn.dataset.modo || 'ida';
+        const modo = btn.dataset.modo as ModoTransfer;
+        if (!(TABELA_TRANSFER as any)[modo]) return;
         aplicarModo(modo);
       });
     });
 
+    inputQtd?.addEventListener('input', () => {
+      const modo = (elModo?.value as ModoTransfer) || 'ida';
+      const raw = Number(inputQtd.value);
+      const qtd = Number.isFinite(raw) ? raw : 1;
+      atualizarPreco(modo, qtd);
+    });
+    inputQtd?.addEventListener('change', () => {
+      const modo = (elModo?.value as ModoTransfer) || 'ida';
+      const qtd = clampQtd(Number(inputQtd.value));
+      inputQtd.value = String(qtd);
+      atualizarPreco(modo, qtd);
+    });
+
+    // Inicialização inicial
     aplicarModo('ida');
   });
 
-  // Inicializa o seletor do sidebar e escuta evento global vindo do seletor grande
+  // ===== INICIALIZA FAIXAS (passeios padrão) =====
   document.querySelectorAll('.form-reserva-root').forEach(root => {
     const temFaixas = (root as HTMLElement).dataset.temFaixas === 'true';
     const temFaixasCompletas = (root as HTMLElement).dataset.temFaixasCompletas === 'true';
