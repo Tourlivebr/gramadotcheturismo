@@ -17,7 +17,8 @@ export async function getStaticPaths() {
     { params: { slug: 'bondinhos-transporte' } },
     { params: { slug: 'city-tour-nova-petropolis' } },
     { params: { slug: 'lumni-transporte' } },
-    { params: { slug: 'maria-fumaca' } }
+    { params: { slug: 'maria-fumaca' } },
+    { params: { slug: 'transfer-ida-volta-porto-alegre' } }
   ];
 }
 
@@ -329,6 +330,42 @@ const passeiosData = {
       "/images/maria-fumaca/maria-fumaca04.webp"
     ],
     tags: ["Trem a vapor", "História ferroviária", "Paisagens da Serra Gaúcha", "Família", "Fotografia"]
+  },
+  'transfer-ida-volta-porto-alegre': {
+    id: 11,
+    titulo: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+    subtitulo: "Translado executivo de ida e volta",
+    categoria: "TRANSFER",
+    preco: 680,
+    avaliacao: 4.95,
+    totalAvaliacoes: 127,
+    parcelas: "1 a 4 pessoas:",
+    price1: 680,
+    price2: 850,
+    label1: "1 a 4 pessoas",
+    label2: "5 a 6 pessoas",
+    temFaixas: true,
+    descricao: "Aproveite seu tempo com a comodidade do transporte privativo! Aprecie as lindas paisagens e colha ótimas dicas com o nosso motorista/guia sobre as programações e atrações da Serra Gaúcha. Sem espera no embarque/desembarque, com embarque imediato e desembarque na hora do seu voo. Privacidade total - só você e suas companhias no veículo. Realizamos translado de ida e volta entre o Aeroporto de Porto Alegre (ou qualquer ponto da capital) e as cidades de Gramado ou Canela.",
+    inclusos: [
+      "Transfer do Aeroporto de Porto Alegre para Gramado ou Canela",
+      "Transfer de Gramado ou Canela para Aeroporto de Porto Alegre",
+      "Motorista/guia experiente",
+      "Veículo privativo e confortável com ar condicionado",
+      "Dicas sobre atrações da Serra Gaúcha",
+      "Água mineral disponível no veículo"
+    ],
+    naoInclusos: [
+      "Refeições",
+      "Bebidas",
+      "Hospedagem"
+    ],
+    duracao: "Aproximadamente 2 horas cada trecho",
+    horarios: ["Conforme horário do voo"],
+    galeria: [
+      "/images/Transfer/Transfer.jpg",
+      "/images/Transfer/Transfer.jpg"
+    ],
+    tags: ["Sem espera no embarque/desembarque", "Embarque imediato", "Privacidade total", "Motorista / Guia experiente"]
   }
 };
 
@@ -443,6 +480,7 @@ const whatsappUrl = `https://wa.me/5554996951419?text=${encodeURIComponent(whats
                 passeioCategoria={passeio.categoria}
                 passeioFaixasCompletas={(passeio as any).faixasCompletas}
                 passeioTemTabelaCompleta={(passeio as any).temTabelaCompleta}
+                ehTransferIdaVolta={slug === 'transfer-ida-volta-porto-alegre'}
               />
             </div>
           </div>

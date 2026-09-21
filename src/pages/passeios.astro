@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StarRating from '../components/StarRating.astro';
 
-// Dados dos passeios (RECEPTIVO / PASSEIOS PRIVATIVOS) — TODOS os 8 cards do CarrosselPasseiosReceptivo.astro na home (mesma ordem)
+// Dados dos passeios (RECEPTIVO / PASSEIOS PRIVATIVOS) — TODOS os 9 cards do CarrosselPasseiosReceptivo.astro na home (mesma ordem)
 const passeios = [
   {
     id: 1,
@@ -141,6 +141,23 @@ const passeios = [
     label2: "6 pessoas",
     whatsappText: "Olá! Quero reservar o passeio de Trem Maria Fumaça.",
     tags: ["Trem Maria Fumaça", "Serra Gaúcha", "Roteiro Turístico"]
+  },
+  {
+    id: 9,
+    titulo: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+    subtitulo: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
+    categoria: "TRANSFER",
+    imagem: "/images/Transfer/Transfer.jpg",
+    avaliacao: 4.95,
+    totalAvaliacoes: 127,
+    slug: "transfer-ida-volta-porto-alegre",
+    duracao: "Aprox. 2h cada trecho",
+    price1: 680,
+    label1: "1 a 4 pessoas",
+    price2: 850,
+    label2: "5 a 6 pessoas",
+    whatsappText: "Olá! Quero reservar o Transfer IDA e VOLTA Porto Alegre / Gramado ou Canela.",
+    tags: ["Buscamos no aeroporto", "Veículo privativo", "Motorista / Guia experiente"]
   }
 ];
 ---
