@@ -3,6 +3,24 @@
 const passeios = [
   {
     id: 1,
+    titulo: "Kongo Pizzaria",
+    subtitulo: "Uma experiência animal em meio à selva",
+    categoria: "PIZZARIA TEMÁTICA",
+    imagem: "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/Pga3b6vi0z0NM39FINKKOZ71F8gDhDyoGpqDNYzE.jpg",
+    avaliacao: 4.8,
+    totalAvaliacoes: 630,
+    slug: "kongo-pizzaria",
+    linkOficial: "https://vendas.kongogramado.com.br?ac=3QS01LBV0I",
+    duracao: 180,
+    vendas: 1890,
+    tags: [
+      "Selva temática em Gramado",
+      "Rodízio de pizzas + show",
+      "Anfitriões Maik, Ary e Aquila"
+    ]
+  },
+  {
+    id: 2,
     titulo: "Era do Fogo Fondue Temático",
     subtitulo: "A experiência mais cavernosa de Gramado",
     categoria: "FONDUE TEMÁTICO",
@@ -10,7 +28,7 @@ const passeios = [
     avaliacao: 4.8,
     totalAvaliacoes: 320,
     slug: "era-do-fogo",
-    linkOficial: "https://ingressos.eradofogo.com.br?ac=KRNSCTHGB7",
+    linkOficial: "https://ingressos.eradofogo.com.br?ac=",
     duracao: 150,
     vendas: 480,
     tags: [
@@ -20,7 +38,7 @@ const passeios = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     titulo: "Ferrovia Secreta Hector",
     subtitulo: "Sequência de comida americana no trem mágico",
     categoria: "GASTRONOMIA TEMÁTICA",
@@ -28,7 +46,7 @@ const passeios = [
     avaliacao: 4.7,
     totalAvaliacoes: 245,
     slug: "ferrovia-secreta",
-    linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=DQ8YMF9ULH",
+    linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=0",
     duracao: 150,
     vendas: 310,
     tags: [
@@ -38,7 +56,7 @@ const passeios = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     titulo: "Hector Pizzaria",
     subtitulo: "Rodízio de Discos de Sabor na Escola de Magia Ônyra",
     categoria: "RODÍZIO DE PIZZA",
@@ -46,7 +64,7 @@ const passeios = [
     avaliacao: 4.9,
     totalAvaliacoes: 512,
     slug: "hector-pizzaria",
-    linkOficial: "https://ingressos.hectordragao.com.br?ac=VJWCTJOVEW",
+    linkOficial: "https://ingressos.hectordragao.com.br?ac=",
     duracao: 140,
     vendas: 720,
     tags: [
@@ -56,7 +74,7 @@ const passeios = [
     ]
   },
   {
-    id: 4,
+    id: 5,
     titulo: "Gatzz Fondue & Show",
     subtitulo: "Dinner show de Broadway na Serra Gaúcha",
     categoria: "DINNER SHOW",
@@ -64,7 +82,7 @@ const passeios = [
     avaliacao: 4.8,
     totalAvaliacoes: 380,
     slug: "gatzz",
-    linkOficial: "https://www.gatzz.com.br?ac=X0GS9W27FL",
+    linkOficial: "https://www.gatzz.com.br?ac=",
     duracao: 180,
     vendas: 410,
     tags: [
@@ -74,7 +92,7 @@ const passeios = [
     ]
   },
   {
-    id: 5,
+    id: 6,
     titulo: "ParksNet Passaporte",
     subtitulo: "Todos os parques da Serra Gaúcha em um só lugar",
     categoria: "PASSEIOS E PARQUES",
@@ -82,7 +100,7 @@ const passeios = [
     avaliacao: 4.9,
     totalAvaliacoes: 1280,
     slug: "parksnet",
-    linkOficial: "https://parksnet.com.br/ingressos/?bookingAgency=326",
+    linkOficial: "https://parksnet.com.br/passeios-e-ingressos-serra-gaucha-com-a-parksnet?bookingAgency=5022",
     duracao: 480,
     vendas: 2100,
     tags: [
@@ -149,16 +167,16 @@ const passeios = [
                     rel="noopener noreferrer"
                     class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
                   >
-                    <span class="flex items-center justify-center gap-2">
-                      🎟️ RESERVE AGORA
+                    <span class="flex items-center justify-center">
+                      RESERVE AGORA
                     </span>
                   </a>
                   <a
                     href={`/${passeio.slug}`}
                     class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
                   >
-                    <span class="flex items-center justify-center gap-2">
-                      ℹ️ SAIBA MAIS
+                    <span class="flex items-center justify-center">
+                      SAIBA MAIS
                     </span>
                   </a>
                 </div>
@@ -214,6 +232,20 @@ const passeios = [
   const passeiosData = [
     {
       id: 1,
+      titulo: "Kongo Pizzaria",
+      subtitulo: "Uma experiência animal em meio à selva",
+      categoria: "PIZZARIA TEMÁTICA",
+      imagem: "https://assets.planne.com.br/apps/34FM2SZ2A3S/images/_/Pga3b6vi0z0NM39FINKKOZ71F8gDhDyoGpqDNYzE.jpg",
+      avaliacao: 4.8,
+      totalAvaliacoes: 630,
+      slug: "kongo-pizzaria",
+      linkOficial: "https://vendas.kongogramado.com.br?ac=3QS01LBV0I",
+      duracao: 180,
+      vendas: 1890,
+      tags: ["Selva temática em Gramado", "Rodízio de pizzas + show", "Anfitriões Maik, Ary e Aquila"]
+    },
+    {
+      id: 2,
       titulo: "Era do Fogo Fondue Temático",
       subtitulo: "A experiência mais cavernosa de Gramado",
       categoria: "FONDUE TEMÁTICO",
@@ -221,13 +253,13 @@ const passeios = [
       avaliacao: 4.8,
       totalAvaliacoes: 320,
       slug: "era-do-fogo",
-      linkOficial: "https://ingressos.eradofogo.com.br?ac=KRNSCTHGB7",
+      linkOficial: "https://ingressos.eradofogo.com.br?ac=",
       duracao: 150,
       vendas: 480,
       tags: ["Fondue na caverna pré-histórica", "Dos criadores da Hector Pizzaria", "Gruga e os cavernosos"]
     },
     {
-      id: 2,
+      id: 3,
       titulo: "Ferrovia Secreta Hector",
       subtitulo: "Sequência de comida americana no trem mágico",
       categoria: "GASTRONOMIA TEMÁTICA",
@@ -235,13 +267,13 @@ const passeios = [
       avaliacao: 4.7,
       totalAvaliacoes: 245,
       slug: "ferrovia-secreta",
-      linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=DQ8YMF9ULH",
+      linkOficial: "https://ferroviasecreta.hectordragao.com.br?ac=0",
       duracao: 150,
       vendas: 310,
       tags: ["Trem mágico do Hector", "Comida americana farta", "Mágica com Edgar Faísca"]
     },
     {
-      id: 3,
+      id: 4,
       titulo: "Hector Pizzaria",
       subtitulo: "Rodízio de Discos de Sabor na Escola de Magia Ônyra",
       categoria: "RODÍZIO DE PIZZA",
@@ -249,13 +281,13 @@ const passeios = [
       avaliacao: 4.9,
       totalAvaliacoes: 512,
       slug: "hector-pizzaria",
-      linkOficial: "https://ingressos.hectordragao.com.br?ac=VJWCTJOVEW",
+      linkOficial: "https://ingressos.hectordragao.com.br?ac=",
       duracao: 140,
       vendas: 720,
       tags: ["Escola de Magia Ônyra", "Mais de 80 sabores de pizza", "Pocket shows com personagens"]
     },
     {
-      id: 4,
+      id: 5,
       titulo: "Gatzz Fondue & Show",
       subtitulo: "Dinner show de Broadway na Serra Gaúcha",
       categoria: "DINNER SHOW",
@@ -263,13 +295,13 @@ const passeios = [
       avaliacao: 4.8,
       totalAvaliacoes: 380,
       slug: "gatzz",
-      linkOficial: "https://www.gatzz.com.br?ac=X0GS9W27FL",
+      linkOficial: "https://www.gatzz.com.br?ac=",
       duracao: 180,
       vendas: 410,
       tags: ["Fondue premium 3 etapas", "Show com 22 artistas", "Classificação 18+"]
     },
     {
-      id: 5,
+      id: 6,
       titulo: "ParksNet Passaporte",
       subtitulo: "Todos os parques da Serra Gaúcha em um só lugar",
       categoria: "PASSEIOS E PARQUES",
@@ -277,7 +309,7 @@ const passeios = [
       avaliacao: 4.9,
       totalAvaliacoes: 1280,
       slug: "parksnet",
-      linkOficial: "https://parksnet.com.br/ingressos/?bookingAgency=326",
+      linkOficial: "https://parksnet.com.br/passeios-e-ingressos-serra-gaucha-com-a-parksnet?bookingAgency=5022",
       duracao: 480,
       vendas: 2100,
       tags: ["Snowland, NBA Park, Skyglass", "Até 10x sem juros", "Cancelamento garantido"]
@@ -324,16 +356,16 @@ const passeios = [
                 rel="noopener noreferrer"
                 class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
               >
-                <span class="flex items-center justify-center gap-2">
-                  🎟️ RESERVE AGORA
+                <span class="flex items-center justify-center">
+                  RESERVE AGORA
                 </span>
               </a>
               <a
                 href="/\${passeio.slug}"
                 class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
               >
-                <span class="flex items-center justify-center gap-2">
-                  ℹ️ SAIBA MAIS
+                <span class="flex items-center justify-center">
+                  SAIBA MAIS
                 </span>
               </a>
             </div>

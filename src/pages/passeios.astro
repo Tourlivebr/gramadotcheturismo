@@ -4,10 +4,27 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StarRating from '../components/StarRating.astro';
 
-// Dados dos passeios (RECEPTIVO / PASSEIOS PRIVATIVOS) — TODOS os 9 cards do CarrosselPasseiosReceptivo.astro na home (mesma ordem)
+// Dados dos passeios (RECEPTIVO / PASSEIOS PRIVATIVOS) — ORDEM atualizada com Transfer POA em 1º
 const passeios = [
   {
     id: 1,
+    titulo: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+    subtitulo: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
+    categoria: "TRANSFER",
+    imagem: "/images/Transfer/Transfer.jpg",
+    avaliacao: 4.95,
+    totalAvaliacoes: 127,
+    slug: "transfer-ida-volta-porto-alegre",
+    duracao: "Aprox. 2h cada trecho",
+    price1: 680,
+    label1: "1 a 4 pessoas",
+    price2: 850,
+    label2: "5 a 6 pessoas",
+    whatsappText: "Olá! Quero reservar o Transfer IDA e VOLTA Porto Alegre / Gramado ou Canela.",
+    tags: ["Buscamos no aeroporto", "Veículo privativo", "Motorista / Guia experiente"]
+  },
+  {
+    id: 2,
     titulo: "City Tour Privativo",
     subtitulo: "Roteiro personalizado com motorista/guia",
     categoria: "CITY TOUR",
@@ -24,7 +41,7 @@ const passeios = [
     tags: ["Roteiro personalizado", "Motorista / Guia", "Gramado e Canela"]
   },
   {
-    id: 2,
+    id: 3,
     titulo: "Transporte Olivas",
     subtitulo: "Translado para as Olivas de Gramado",
     categoria: "TRANSFER",
@@ -41,7 +58,7 @@ const passeios = [
     tags: ["Buscamos e deixamos no hotel", "Carro executivo com ar", "Valor de ida e volta"]
   },
   {
-    id: 3,
+    id: 4,
     titulo: "Transporte Jolimont",
     subtitulo: "Translado para a Vinícola Jolimont",
     categoria: "TRANSFER",
@@ -58,7 +75,7 @@ const passeios = [
     tags: ["Buscamos e deixamos no hotel", "Carro executivo com ar", "Valor de ida e volta"]
   },
   {
-    id: 4,
+    id: 5,
     titulo: "Transporte Sky Glass",
     subtitulo: "Translado para a Skyglass Canela",
     categoria: "TRANSFER",
@@ -75,7 +92,7 @@ const passeios = [
     tags: ["Buscamos e deixamos no hotel", "Carro executivo com ar", "Valor de ida e volta"]
   },
   {
-    id: 5,
+    id: 6,
     titulo: "Bondinhos Transporte",
     subtitulo: "Translado para os Bondinhos Aéreos",
     categoria: "TRANSFER",
@@ -92,7 +109,7 @@ const passeios = [
     tags: ["Buscamos e deixamos no hotel", "Carro executivo com ar", "Bondinhos Aéreos"]
   },
   {
-    id: 6,
+    id: 7,
     titulo: "City Tour Nova Petrópolis",
     subtitulo: "Roteiro completo por Nova Petrópolis",
     categoria: "CITY TOUR",
@@ -109,7 +126,7 @@ const passeios = [
     tags: ["Roteiro completo", "Nova Petrópolis", "Motorista / Guia"]
   },
   {
-    id: 7,
+    id: 8,
     titulo: "Lumni Transporte",
     subtitulo: "Translado para a experiência Lumni",
     categoria: "TRANSFER",
@@ -126,7 +143,7 @@ const passeios = [
     tags: ["Buscamos e deixamos no hotel", "Carro executivo com ar", "Experiência Lumni"]
   },
   {
-    id: 8,
+    id: 9,
     titulo: "Trem Maria Fumaça",
     subtitulo: "Passeio de Maria Fumaça pela Serra Gaúcha",
     categoria: "TREM",
@@ -141,23 +158,6 @@ const passeios = [
     label2: "6 pessoas",
     whatsappText: "Olá! Quero reservar o passeio de Trem Maria Fumaça.",
     tags: ["Trem Maria Fumaça", "Serra Gaúcha", "Roteiro Turístico"]
-  },
-  {
-    id: 9,
-    titulo: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
-    subtitulo: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
-    categoria: "TRANSFER",
-    imagem: "/images/Transfer/Transfer.jpg",
-    avaliacao: 4.95,
-    totalAvaliacoes: 127,
-    slug: "transfer-ida-volta-porto-alegre",
-    duracao: "Aprox. 2h cada trecho",
-    price1: 680,
-    label1: "1 a 4 pessoas",
-    price2: 850,
-    label2: "5 a 6 pessoas",
-    whatsappText: "Olá! Quero reservar o Transfer IDA e VOLTA Porto Alegre / Gramado ou Canela.",
-    tags: ["Buscamos no aeroporto", "Veículo privativo", "Motorista / Guia experiente"]
   }
 ];
 ---
@@ -296,12 +296,9 @@ const passeios = [
                 <div class="flex flex-col gap-2 mt-auto">
                   <a
                     href={`/passeio/${passeio.slug}`}
-                    class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
+                    class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
                   >
-                    <span class="flex items-center justify-center gap-2">
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                      </svg>
+                    <span class="flex items-center justify-center">
                       RESERVE AGORA
                     </span>
                   </a>
@@ -310,10 +307,10 @@ const passeios = [
                     href={`https://wa.me/5554993220552?text=${encodeURIComponent(passeio.whatsappText || `Olá! Gostaria de reservar o passeio: ${passeio.titulo}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="w-full border-2 border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
+                    class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
                   >
-                    <span class="flex items-center justify-center gap-2">
-                      💬 Fale no WhatsApp
+                    <span class="flex items-center justify-center">
+                      SAIBA MAIS
                     </span>
                   </a>
                 </div>

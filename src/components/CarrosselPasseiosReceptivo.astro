@@ -2,6 +2,19 @@
 const passeiosReceptivo = [
   {
     id: 1,
+    title: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+    subtitle: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
+    category: "TRANSFER",
+    image: "/images/Transfer/Transfer.jpg",
+    price1: 680,
+    label1: "1 a 4 pessoas",
+    price2: 850,
+    label2: "5 a 6 pessoas",
+    slug: "transfer-ida-volta-porto-alegre",
+    whatsappText: "Olá! Quero reservar o Transfer IDA e VOLTA Porto Alegre / Gramado ou Canela."
+  },
+  {
+    id: 2,
     title: "City Tour Privativo",
     subtitle: "Roteiro personalizado com motorista/guia",
     category: "CITY TOUR",
@@ -14,7 +27,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o City Tour Privativo."
   },
   {
-    id: 2,
+    id: 3,
     title: "Transporte Olivas",
     subtitle: "Translado para as Olivas de Gramado",
     category: "TRANSFER",
@@ -27,7 +40,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o Transporte para as Olivas."
   },
   {
-    id: 3,
+    id: 4,
     title: "Transporte Jolimont",
     subtitle: "Translado para a Vinícola Jolimont",
     category: "TRANSFER",
@@ -40,7 +53,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o Transporte para a Jolimont."
   },
   {
-    id: 4,
+    id: 5,
     title: "Transporte Sky Glass",
     subtitle: "Translado para a Skyglass Canela",
     category: "TRANSFER",
@@ -53,7 +66,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o Transporte para Sky Glass."
   },
   {
-    id: 5,
+    id: 6,
     title: "Bondinhos Transporte",
     subtitle: "Translado para os Bondinhos Aéreos",
     category: "TRANSFER",
@@ -66,7 +79,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o Transporte dos Bondinhos."
   },
   {
-    id: 6,
+    id: 7,
     title: "City Tour Nova Petrópolis",
     subtitle: "Roteiro completo por Nova Petrópolis",
     category: "CITY TOUR",
@@ -79,7 +92,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o City Tour de Nova Petrópolis."
   },
   {
-    id: 7,
+    id: 8,
     title: "Lumni Transporte",
     subtitle: "Translado para a experiência Lumni",
     category: "TRANSFER",
@@ -92,7 +105,7 @@ const passeiosReceptivo = [
     whatsappText: "Olá! Quero reservar o Transporte Lumni."
   },
   {
-    id: 8,
+    id: 9,
     title: "Trem Maria Fumaça",
     subtitle: "Passeio de Maria Fumaça pela Serra Gaúcha",
     category: "TREM",
@@ -103,19 +116,6 @@ const passeiosReceptivo = [
     label2: "6 pessoas",
     slug: "maria-fumaca",
     whatsappText: "Olá! Quero reservar o passeio de Trem Maria Fumaça."
-  },
-  {
-    id: 9,
-    title: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
-    subtitle: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
-    category: "TRANSFER",
-    image: "/images/Transfer/Transfer.jpg",
-    price1: 680,
-    label1: "1 a 4 pessoas",
-    price2: 850,
-    label2: "5 a 6 pessoas",
-    slug: "transfer-ida-volta-porto-alegre",
-    whatsappText: "Olá! Quero reservar o Transfer IDA e VOLTA Porto Alegre / Gramado ou Canela."
   },
 ];
 ---
@@ -180,12 +180,9 @@ const passeiosReceptivo = [
 
                     <a 
                       href={`/passeio/${passeio.slug}`}
-                      class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 text-sm"
+                      class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md flex items-center justify-center"
                     >
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                      </svg>
-                      <span>RESERVE AGORA</span>
+                      RESERVE AGORA
                     </a>
                   </div>
                 </div>
