@@ -5,7 +5,34 @@
    - Ingressos (por pessoa): usam precoPessoa (R$ por pessoa) + opcionalmente faixa adulto/criança (por pessoa)
 */
 const TABELA_VALORES = {
-  /* ============== INGRESSOS E ATRAÇÕES (6) ============== */
+  /* ============== INGRESSOS E ATRAÇÕES (7) — Ordem: ParksNet → Kongo → demais (igual aos cards) ============== */
+  "ParksNet Passaporte": {
+    tipo: "ingresso",
+    unidade: "por pessoa (valor referência)",
+    faixas: [
+      { rotulo: "Passaporte Adulto", preco: 399 },
+      { rotulo: "Passaporte Criança", preco: 299 },
+    ],
+    tags: ["Todos os parques", "Snowland, NBA Park, Skyglass"]
+  },
+  "Kongo Pizzaria": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Rodízio + Show (Sem reserva)", preco: 199.90 },
+      { rotulo: "Reserva de mesa (17:30 / 22:00)", preco: 259.90 },
+    ],
+    tags: ["Selva temática em Gramado", "Maik, Ary, Rainha Aquila", "Shows: Aventura na Selva, Alguém viu o Maik, Sons da Natureza"]
+  },
+  "Parque da Mônica": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Adulto (acima de 14 anos)", preco: 219 },
+      { rotulo: "Infantil (3 a 14 anos)", preco: 199 },
+    ],
+    tags: ["Parque Vila da Mônica Gramado", "Turma da Mônica", "Família"]
+  },
   "Era do Fogo Fondue Temático": {
     tipo: "ingresso",
     unidade: "por pessoa",
@@ -41,24 +68,6 @@ const TABELA_VALORES = {
       { rotulo: "Acompanhante", preco: 280 },
     ],
     tags: ["Dinner show", "Fondue premium"]
-  },
-  "ParksNet Passaporte": {
-    tipo: "ingresso",
-    unidade: "por pessoa (valor referência)",
-    faixas: [
-      { rotulo: "Passaporte Adulto", preco: 399 },
-      { rotulo: "Passaporte Criança", preco: 299 },
-    ],
-    tags: ["Todos os parques", "Snowland, NBA Park, Skyglass"]
-  },
-  "Kongo Pizzaria": {
-    tipo: "ingresso",
-    unidade: "por pessoa",
-    faixas: [
-      { rotulo: "Rodízio + Show (Sem reserva)", preco: 199.90 },
-      { rotulo: "Reserva de mesa (17:30 / 22:00)", preco: 259.90 },
-    ],
-    tags: ["Selva temática em Gramado", "Maik, Ary, Rainha Aquila", "Shows: Aventura na Selva, Alguém viu o Maik, Sons da Natureza"]
   },
   "Passaporte Grupo Dreams": {
     tipo: "ingresso",
@@ -154,8 +163,28 @@ const TABELA_VALORES = {
   },
 };
 
-/* Lista amigável dos itens exibidos no dropdown (mantem ordem: atrações primeiro, depois passeios) */
-const passeios = Object.keys(TABELA_VALORES);
+/* Lista amigável dos itens exibidos no dropdown (ordem: ParksNet primeiro → Kongo → demais ingressos → depois passeios/translados) */
+const passeios = [
+  // Ingressos e Atrações (ordem exata dos cards)
+  "ParksNet Passaporte",
+  "Kongo Pizzaria",
+  "Parque da Mônica",
+  "Era do Fogo Fondue Temático",
+  "Ferrovia Secreta Hector",
+  "Hector Pizzaria",
+  "Gatzz Fondue & Show",
+  "Passaporte Grupo Dreams",
+  // Passeios e Transferes (ordem exata dos cards)
+  "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
+  "City Tour Privativo",
+  "Transporte Olivas",
+  "Transporte Jolimont",
+  "Transporte Sky Glass",
+  "Bondinhos Transporte",
+  "City Tour Nova Petrópolis",
+  "Lumni Transporte",
+  "Trem Maria Fumaça",
+];
 
 /** FUNÇÃO CENTRALIZADA: calcula o valor de 1 item selecionado
   @param {string} nome - Nome EXATO do passeio/ingresso na TABELA_VALORES
@@ -427,6 +456,12 @@ function calcularValorItem(nome, qtd = 1, faixaIdx = 0) {
 // 1) TABELA VALORES EMBUTIDA (alinhada com a tabela do Astro)
 // ==============================
 const TABELA_VALORES = {
+  "ParksNet Passaporte": { tipo:"ingresso", unidade:"por pessoa (valor referência)",
+    faixas:[{rotulo:"Passaporte Adulto",preco:399},{rotulo:"Passaporte Criança",preco:299}] },
+  "Kongo Pizzaria": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Rodízio + Show (Sem reserva)",preco:199.90},{rotulo:"Reserva de mesa (17:30 / 22:00)",preco:259.90}] },
+  "Parque da Mônica": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Adulto (acima de 14 anos)",preco:219},{rotulo:"Infantil (3 a 14 anos)",preco:199}] },
   "Era do Fogo Fondue Temático": { tipo:"ingresso", unidade:"por pessoa",
     faixas:[{rotulo:"Adulto (acima de 6 anos)",preco:180},{rotulo:"Criança (3 a 6 anos)",preco:90}] },
   "Ferrovia Secreta Hector": { tipo:"ingresso", unidade:"por pessoa",
@@ -435,10 +470,6 @@ const TABELA_VALORES = {
     faixas:[{rotulo:"Rodízio Adulto",preco:150},{rotulo:"Rodízio Criança (4 a 10 anos)",preco:75}] },
   "Gatzz Fondue & Show": { tipo:"ingresso", unidade:"por pessoa",
     faixas:[{rotulo:"Adulto (18+)",preco:280},{rotulo:"Acompanhante",preco:280}] },
-  "ParksNet Passaporte": { tipo:"ingresso", unidade:"por pessoa (valor referência)",
-    faixas:[{rotulo:"Passaporte Adulto",preco:399},{rotulo:"Passaporte Criança",preco:299}] },
-  "Kongo Pizzaria": { tipo:"ingresso", unidade:"por pessoa",
-    faixas:[{rotulo:"Rodízio + Show (Sem reserva)",preco:199.90},{rotulo:"Reserva de mesa (17:30 / 22:00)",preco:259.90}] },
   "Passaporte Grupo Dreams": { tipo:"ingresso", unidade:"por pessoa",
     faixas:[{rotulo:"Adulto",preco:890},{rotulo:"Criança",preco:690}] },
 
