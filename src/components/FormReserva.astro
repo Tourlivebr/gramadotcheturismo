@@ -18,6 +18,9 @@ interface Props {
   passeioFaixasCompletas?: FaixaPreco[];
   passeioTemTabelaCompleta?: boolean;
   ehTransferIdaVolta?: boolean;
+  temContadorPessoas?: boolean;
+  precoPorPessoa?: number;
+  precoCheioPorPessoa?: number;
 }
 const {
   passeioNome,
@@ -34,6 +37,9 @@ const {
   passeioFaixasCompletas,
   passeioTemTabelaCompleta = false,
   ehTransferIdaVolta = false,
+  temContadorPessoas = false,
+  precoPorPessoa,
+  precoCheioPorPessoa,
 } = Astro.props;
 
 const whatsappNumber = "5554996366980";
@@ -46,6 +52,13 @@ const precoInicial = temFaixasCompletas
 const labelInicial = temFaixasCompletas
   ? passeioFaixasCompletas![0].label
   : (passeioLabel1 ?? passeioParcelas ?? '');
+
+const precoPessoaCalculado = precoPorPessoa !== undefined
+  ? precoPorPessoa
+  : (passeioPreco1 ?? passeioPreco ?? 0);
+const precoCheioCalculado = precoCheioPorPessoa !== undefined
+  ? precoCheioPorPessoa
+  : (passeioPreco2 ?? precoPessoaCalculado);
 
 const formatarReal = (v: number) => `R$ ${v.toFixed(2).replace('.', ',')}`;
 
@@ -62,6 +75,9 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
   data-label2={passeioLabel2 ?? ''}
   data-faixas-completas={faixasCompletasJSON}
   data-eh-transfer-ida-volta={ehTransferIdaVolta ? 'true' : 'false'}
+  data-tem-contador-pessoas={temContadorPessoas ? 'true' : 'false'}
+  data-preco-pessoa={precoPessoaCalculado}
+  data-preco-cheio-pessoa={precoCheioCalculado}
 >
   {(passeioDuracao || passeioHorarios || passeioCategoria) && (
 
@@ -242,43 +258,92 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
   ) : (
     <!-- Seletor / Exibição de preço (passeios padrão) -->
     <div class="mb-5">
-      {temFaixasCompletas && passeioFaixasCompletas ? (
-        <div class="grid grid-cols-2 gap-2 mb-4">
-          {passeioFaixasCompletas.map((fx, idx) => (
+      {temContadorPessoas ? (
+        <div class="space-y-3">
+          <div class="text-center space-y-1">
+            <div class="text-gray-600 text-sm">Por pessoa</div>
+            <div class="text-xl font-bold text-gray-400 line-through form-reserva-cheio">
+              {formatarReal(precoCheioCalculado)}
+            </div>
+            <div class="text-3xl font-bold text-primary-600 form-reserva-unitario">
+              {formatarReal(precoPessoaCalculado)}
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center gap-4 py-3">
             <button
               type="button"
-              data-faixa-idx={idx}
-              class={`faixa-completa-btn sidebar-faixa-btn border-2 rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ${idx === 0 ? 'border-primary-500 ring-2 ring-primary-500 bg-white' : 'border-gray-200 bg-white'}`}
-            >
-              <div class="text-gray-600 text-xs font-medium mb-1">{fx.label}</div>
-              <div class="text-xl font-bold text-primary-600">{formatarReal(fx.preco)}</div>
-            </button>
-          ))}
-        </div>
-      ) : (passeioTemFaixas && passeioPreco1 !== undefined && passeioPreco2 !== undefined && passeioLabel1 && passeioLabel2) ? (
-        <div class="grid grid-cols-2 gap-2 mb-4">
-          <button type="button" data-faixa="1" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-primary-500 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ring-2 ring-primary-500">
-            <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel1}</div>
-            <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco1)}</div>
-          </button>
-          <button type="button" data-faixa="2" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-gray-200 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md">
-            <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel2}</div>
-            <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco2)}</div>
-          </button>
-        </div>
-      ) : null}
+              data-pessoa-btn="menos"
+              class="w-11 h-11 rounded-full border-2 border-gray-300 bg-white text-2xl font-bold text-gray-700 hover:border-primary-500 hover:text-primary-600 transition shadow-sm"
+              aria-label="Diminuir pessoas"
+            >−</button>
+            <div class="text-center">
+              <div class="text-xs text-gray-500 font-medium">Quantidade de pessoas</div>
+              <div class="text-3xl font-bold text-gray-900 form-reserva-qtd">1</div>
+            </div>
+            <button
+              type="button"
+              data-pessoa-btn="mais"
+              class="w-11 h-11 rounded-full border-2 border-gray-300 bg-white text-2xl font-bold text-gray-700 hover:border-primary-500 hover:text-primary-600 transition shadow-sm"
+              aria-label="Aumentar pessoas"
+            >+</button>
+          </div>
 
-      <div class="text-center">
-        <div class="text-gray-600 text-sm mb-1 form-reserva-label">
-          {temFaixasCompletas || passeioTemFaixas ? labelInicial : passeioParcelas}
+          <div class="border-2 border-primary-100 bg-gradient-to-br from-primary-50/80 to-white rounded-xl p-4 shadow-sm space-y-2">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-600 font-medium">
+                <span class="form-reserva-qtd-label">1 pessoa</span> × {formatarReal(precoPessoaCalculado)}
+              </span>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-primary-100">
+              <span class="text-gray-900 text-base font-semibold">Valor total:</span>
+              <span class="text-2xl font-bold text-primary-600 form-reserva-total">
+                {formatarReal(precoPessoaCalculado)}
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="text-3xl font-bold text-primary-600 form-reserva-valor">
-          {formatarReal(temFaixasCompletas || passeioTemFaixas ? precoInicial : (passeioPreco ?? 0))}
+      ) : (
+        <>
+        {temFaixasCompletas && passeioFaixasCompletas ? (
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            {passeioFaixasCompletas.map((fx, idx) => (
+              <button
+                type="button"
+                data-faixa-idx={idx}
+                class={`faixa-completa-btn sidebar-faixa-btn border-2 rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ${idx === 0 ? 'border-primary-500 ring-2 ring-primary-500 bg-white' : 'border-gray-200 bg-white'}`}
+              >
+                <div class="text-gray-600 text-xs font-medium mb-1">{fx.label}</div>
+                <div class="text-xl font-bold text-primary-600">{formatarReal(fx.preco)}</div>
+              </button>
+            ))}
+          </div>
+        ) : (passeioTemFaixas && passeioPreco1 !== undefined && passeioPreco2 !== undefined && passeioLabel1 && passeioLabel2) ? (
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <button type="button" data-faixa="1" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-primary-500 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md ring-2 ring-primary-500">
+              <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel1}</div>
+              <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco1)}</div>
+            </button>
+            <button type="button" data-faixa="2" class="faixa-pessoas-btn sidebar-faixa-btn border-2 border-gray-200 bg-white rounded-xl p-3 text-center shadow-sm transition-all hover:shadow-md">
+              <div class="text-gray-600 text-xs font-medium mb-1">{passeioLabel2}</div>
+              <div class="text-xl font-bold text-primary-600">{formatarReal(passeioPreco2)}</div>
+            </button>
+          </div>
+        ) : null}
+
+        <div class="text-center">
+          <div class="text-gray-600 text-sm mb-1 form-reserva-label">
+            {temFaixasCompletas || passeioTemFaixas ? labelInicial : passeioParcelas}
+          </div>
+          <div class="text-3xl font-bold text-primary-600 form-reserva-valor">
+            {formatarReal(temFaixasCompletas || passeioTemFaixas ? precoInicial : (passeioPreco ?? 0))}
+          </div>
         </div>
-      </div>
+        </>
+      )}
     </div>
 
-    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`}>
+    <form class="space-y-4 form-reserva-form mb-4" onsubmit={`return window.__enviarReservaGeneric(event, String.raw\`${passeioNome}\`)`} novalidate>
       <h3 class="font-bold text-lg text-gray-900">Complete sua Reserva:</h3>
 
       <div>
@@ -291,15 +356,40 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
         <input type="tel" required name="formWhats" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="(00) 00000-0000" />
       </div>
 
+      {temContadorPessoas && (
+        <input type="hidden" name="formQtdPessoas" value="1" />
+      )}
+
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Passeio:</label>
         <input type="text" readonly name="formPasseio" class="w-full px-3 py-2 border border-gray-200 bg-gray-50 rounded-lg text-gray-700 cursor-not-allowed" value={passeioNome} />
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Data:</label>
-        <input type="date" required name="formData" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Data:</label>
+          <input type="date" required name="formData" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" />
+        </div>
+        {temContadorPessoas && (
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Horário de saída:</label>
+            <input type="time" name="formHoraSaida" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" />
+          </div>
+        )}
       </div>
+
+      {temContadorPessoas && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Hotel:</label>
+            <input type="text" name="formHotel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="Nome do hotel / pousada" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Apartamento:</label>
+            <input type="text" name="formApartamento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition" placeholder="Número do apartamento" />
+          </div>
+        </div>
+      )}
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Observação:</label>
@@ -483,11 +573,33 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
         `*WhatsApp:* ${whats}`,
         `*Passeio:* ${passeio}`,
       ];
-      if (faixaLabel && faixaValor) {
+
+      const qtdRaw = Number(el.formQtdPessoas?.value);
+      const qtdPessoas = Number.isFinite(qtdRaw) && qtdRaw >= 1 ? Math.floor(qtdRaw) : null;
+      const formRoot = form.closest('.form-reserva-root') as HTMLElement | null;
+      const ehContadorPessoas = formRoot?.dataset?.temContadorPessoas === 'true';
+      const precoPessoa = Number(formRoot?.dataset?.precoPessoa || '0');
+
+      if (ehContadorPessoas && qtdPessoas && precoPessoa > 0) {
+        const total = qtdPessoas * precoPessoa;
+        linhas.push(`*Pessoas:* ${qtdPessoas} ${qtdPessoas === 1 ? 'pessoa' : 'pessoas'}`);
+        linhas.push(`*Valor por pessoa:* ${fmt(precoPessoa)}`);
+        linhas.push(`*VALOR TOTAL:* ${fmt(total)}`);
+      } else if (faixaLabel && faixaValor) {
         linhas.push(`*Faixa:* ${faixaLabel}`);
         linhas.push(`*Valor:* ${faixaValor}`);
       }
+
       if (data) linhas.push(`*Data:* ${formatarData(data)}`);
+
+      const horaSaida = el.formHoraSaida?.value?.trim() || '';
+      const hotel = el.formHotel?.value?.trim() || '';
+      const apartamento = el.formApartamento?.value?.trim() || '';
+
+      if (horaSaida) linhas.push(`*Horário de saída:* ${horaSaida}`);
+      if (hotel) linhas.push(`*Hotel:* ${hotel}`);
+      if (apartamento) linhas.push(`*Apartamento:* ${apartamento}`);
+
       if (obs) linhas.push(`*Observação:* ${obs}`);
 
       const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
@@ -495,6 +607,50 @@ const faixasCompletasJSON = temFaixasCompletas ? JSON.stringify(passeioFaixasCom
       return false;
     };
   }
+
+  // ===== INICIALIZA CONTADOR DE PESSOAS (passeios por pessoa: ex. Tour Vinhos e Sabores) =====
+  document.querySelectorAll('.form-reserva-root[data-tem-contador-pessoas="true"]').forEach(root => {
+    const r = root as HTMLElement;
+    const precoUnit = Number(r.dataset.precoPessoa || '0');
+    const precoCheio = Number(r.dataset.precoCheioPessoa || '0');
+
+    const qtdEl = r.querySelector<HTMLElement>('.form-reserva-qtd');
+    const qtdLabelEl = r.querySelector<HTMLElement>('.form-reserva-qtd-label');
+    const totalEl = r.querySelector<HTMLElement>('.form-reserva-total');
+    const unitEl = r.querySelector<HTMLElement>('.form-reserva-unitario');
+    const cheioEl = r.querySelector<HTMLElement>('.form-reserva-cheio');
+    const hiddenQtd = r.querySelector<HTMLInputElement>('input[name="formQtdPessoas"]');
+    const contatoEl = r.querySelector<HTMLAnchorElement>('[data-whatsapp-direct="true"]');
+    const baseText = (contatoEl?.dataset as any)?.baseText || '';
+
+    let qtd = 1;
+    const clamp = (v: number) => Math.max(1, Math.min(99, Math.floor(v || 1)));
+    const atualizar = () => {
+      qtd = clamp(qtd);
+      const total = qtd * precoUnit;
+      if (qtdEl) qtdEl.textContent = String(qtd);
+      if (qtdLabelEl) qtdLabelEl.textContent = `${qtd} ${qtd === 1 ? 'pessoa' : 'pessoas'}`;
+      if (totalEl) totalEl.textContent = fmt(total);
+      if (hiddenQtd) hiddenQtd.value = String(qtd);
+      if (unitEl && precoUnit > 0) unitEl.textContent = fmt(precoUnit);
+      if (cheioEl && precoCheio > 0 && precoCheio !== precoUnit) cheioEl.textContent = fmt(precoCheio);
+      if (contatoEl) {
+        const msg = precoUnit
+          ? `${baseText} ${qtd} ${qtd === 1 ? 'pessoa' : 'pessoas'} — ${fmt(precoUnit)} por pessoa. Total: ${fmt(total)}.`
+          : baseText;
+        contatoEl.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+      }
+    };
+    r.querySelectorAll<HTMLButtonElement>('[data-pessoa-btn]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const op = btn.dataset.pessoaBtn;
+        if (op === 'mais') qtd += 1;
+        if (op === 'menos') qtd -= 1;
+        atualizar();
+      });
+    });
+    atualizar();
+  });
 
   // ===== INICIALIZA TRANSFER (IDA/VOLTA) =====
   document.querySelectorAll('.form-reserva-root[data-eh-transfer-ida-volta="true"]').forEach(root => {

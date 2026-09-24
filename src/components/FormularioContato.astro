@@ -161,6 +161,14 @@ const TABELA_VALORES = {
     ],
     tags: ["Trem Maria Fumaça", "Serra Gaúcha"]
   },
+  "Tour Vinhos e Sabores": {
+    tipo: "ingresso",
+    unidade: "por pessoa",
+    faixas: [
+      { rotulo: "Por pessoa (todas as idades)", preco: 229 },
+    ],
+    tags: ["Vinícola Jolimont", "Família Chaulet", "Catedral de Pedra Canela", "Chocolate Gramadense"]
+  },
 };
 
 /* Lista amigável dos itens exibidos no dropdown (ordem: ParksNet primeiro → Kongo → demais ingressos → depois passeios/translados) */
@@ -184,6 +192,7 @@ const passeios = [
   "City Tour Nova Petrópolis",
   "Lumni Transporte",
   "Trem Maria Fumaça",
+  "Tour Vinhos e Sabores",
 ];
 
 /** FUNÇÃO CENTRALIZADA: calcula o valor de 1 item selecionado
@@ -490,7 +499,9 @@ const TABELA_VALORES = {
   "Lumni Transporte": { tipo:"privativo", unidade:"por veículo (ida e volta)",
     faixas:[{rotulo:"1 a 4 passageiros",preco:200},{rotulo:"5 a 6 passageiros",preco:300}] },
   "Trem Maria Fumaça": { tipo:"privativo", unidade:"por pacote",
-    faixas:[{rotulo:"1 a 2 passageiros",preco:1300},{rotulo:"Até 6 passageiros",preco:2999.90}] }
+    faixas:[{rotulo:"1 a 2 passageiros",preco:1300},{rotulo:"Até 6 passageiros",preco:2999.90}] },
+  "Tour Vinhos e Sabores": { tipo:"ingresso", unidade:"por pessoa",
+    faixas:[{rotulo:"Por pessoa (todas as idades)",preco:229}] }
 };
 const TODOS_ITENS = Object.keys(TABELA_VALORES);
 

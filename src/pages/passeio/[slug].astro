@@ -10,6 +10,7 @@ export async function getStaticPaths() {
   return [
     { params: { slug: 'tour-o-quatrilho' } },
     { params: { slug: 'tour-trem-vinho' } },
+    { params: { slug: 'tour-vinhos-e-sabores' } },
     { params: { slug: 'city-tour-privativo' } },
     { params: { slug: 'transporte-olivas' } },
     { params: { slug: 'transporte-jolimont' } },
@@ -83,6 +84,48 @@ const passeiosData = {
       "/images/terra-magica-florybal.webp"
     ],
     tags: ["Caminhada pelo Parque Epopéia", "Degustação de vinhos e sucos", "Apresentações culturais"]
+  },
+  'tour-vinhos-e-sabores': {
+    id: 3,
+    titulo: "Tour Vinhos e Sabores",
+    subtitulo: "Vinícola Jolimont + Chaulet + Catedral de Pedra + Chocolate Gramadense",
+    categoria: "CITY TOUR",
+    preco: 229,
+    avaliacao: 4.9,
+    totalAvaliacoes: 86,
+    parcelas: "Por pessoa:",
+    price1: 229,
+    price2: 229,
+    label1: "Por pessoa (promocional)",
+    label2: "Por pessoa (cheio)",
+    temFaixas: false,
+    descricao: "Uma experiência especial pelos sabores, tradições e paisagens da Serra Gaúcha. Com transporte de ida e volta, você conhece uma das vinícolas mais tradicionais da região, experimenta produtos coloniais e ainda visita dois dos pontos mais marcantes de Canela e Gramado. Um passeio perfeito para quem quer conhecer os sabores, a cultura e alguns dos lugares mais tradicionais da Serra Gaúcha em uma única experiência.",
+    inclusos: [
+      "Transporte de ida e volta",
+      "Ingresso para a Vinícola Jolimont",
+      "Degustação na vinícola (vinhos, espumantes e suco de uva)",
+      "Degustação na Família Chaulet (salames, queijos e produtos coloniais)",
+      "Parada para fotos na Catedral de Pedra – Canela",
+      "Adega do Nono (Degustação)",
+      "Visitação à Chocolate Gramadense"
+    ],
+    duracao: "Aproximadamente 6 horas",
+    horarios: ["A combinar"],
+    galeria: [
+      "/images/jolimont/Jolimont1.png",
+      "/images/jolimont/chaulet.png",
+      "/images/jolimont/catedral.png",
+      "/images/jolimont/gramadense.png",
+      "/images/jolimont/nono.png",
+      "/images/jolimont/jolimont.jpg"
+    ],
+    tags: [
+      "Vinícola Jolimont + degustação",
+      "Família Chaulet: queijos e salames",
+      "Catedral de Pedra Canela",
+      "Chocolate Gramadense",
+      "Transporte ida e volta incluso"
+    ]
   },
   'city-tour-privativo': {
     id: 3,
@@ -481,6 +524,9 @@ const whatsappUrl = `https://wa.me/5554996366980?text=${encodeURIComponent(whats
                 passeioFaixasCompletas={(passeio as any).faixasCompletas}
                 passeioTemTabelaCompleta={(passeio as any).temTabelaCompleta}
                 ehTransferIdaVolta={slug === 'transfer-ida-volta-porto-alegre'}
+                temContadorPessoas={slug === 'tour-vinhos-e-sabores'}
+                precoPorPessoa={slug === 'tour-vinhos-e-sabores' ? 189 : undefined}
+                precoCheioPorPessoa={slug === 'tour-vinhos-e-sabores' ? 229 : undefined}
               />
             </div>
           </div>
