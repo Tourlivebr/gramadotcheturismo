@@ -1,8 +1,8 @@
 ---
-// Remover todo o array todosPasseios daqui - agora será definido no JavaScript
+const { mobileHero = false } = Astro.props;
 ---
 
-<header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/20">
+<header data-mobile-hero={mobileHero ? "true" : undefined} id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/20">
   <div class="container mx-auto px-2 lg:px-4">
     <nav class="header-nav flex items-center justify-between h-20 lg:h-28" aria-label="Navegação principal">
       <!-- Logo -->
@@ -351,7 +351,7 @@
   
   // Search functionality
   function performSearch(query, resultsContainer) {
-    console.log('Performing search for:', query); // Debug
+
     
     if (!query.trim()) {
       resultsContainer.classList.add('hidden');
@@ -363,14 +363,13 @@
       (passeio.subtitulo && passeio.subtitulo.toLowerCase().includes(query.toLowerCase()))
     );
     
-    console.log('Filtered results:', filteredPasseios); // Debug
+
     
     if (filteredPasseios.length === 0) {
-      resultsContainer.innerHTML = `
-        <div class="p-4 text-gray-500 text-center">
-          Nenhum passeio encontrado para "${query}"
-        </div>
-      `;
+      const message = document.createElement('div');
+      message.className = 'p-4 text-gray-500 text-center';
+      message.textContent = `Nenhum serviço encontrado para "${query}"`;
+      resultsContainer.replaceChildren(message);
     } else {
       resultsContainer.innerHTML = filteredPasseios.map(passeio => {
         const href = `/${passeio.slug}`;
@@ -387,6 +386,22 @@
     resultsContainer.classList.remove('hidden');
   }
   
+  const heroSearchInput = document.getElementById('hero-search-input');
+  const heroSearchResults = document.getElementById('hero-search-results');
+  heroSearchInput?.addEventListener('input', (e) => {
+    performSearch(e.target.value, heroSearchResults);
+  });
+  heroSearchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') heroSearchResults?.classList.add('hidden');
+    if (e.key === 'Enter') {
+      const firstResult = heroSearchResults?.querySelector('a');
+      if (firstResult) window.location.href = firstResult.href;
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#hero-service-search')) heroSearchResults?.classList.add('hidden');
+  });
+
   // Desktop search
   searchInput?.addEventListener('input', (e) => {
     performSearch(e.target.value, searchResults);
@@ -591,4 +606,49 @@
       display: none !important;
     }
   }
+  @media (min-width: 0px) {
+    #header[data-mobile-hero="true"] {
+      background: transparent;
+      backdrop-filter: none;
+      border: 0;
+    }
+    #header[data-mobile-hero="true"].scrolled {
+      height: auto;
+      background: rgb(255 255 255 / 95%);
+      backdrop-filter: blur(12px);
+    }
+    #header[data-mobile-hero="true"] .header-nav {
+      height: 112px !important;
+      padding: 12px 14px;
+    }
+    #header[data-mobile-hero="true"].scrolled .header-nav { height: 72px !important; }
+    #header[data-mobile-hero="true"] .header-logo {
+      display: flex !important;
+      margin-left: 0;
+      height: 88px;
+    }
+    #header[data-mobile-hero="true"] .header-logo img { max-height: 100%; }
+    #header[data-mobile-hero="true"].scrolled .header-logo { height: 60px; }
+    #header[data-mobile-hero="true"] .header-nav > ul,
+    #header[data-mobile-hero="true"] .header-nav > .lg\:flex,
+    #header[data-mobile-hero="true"] .header-mobile-search-btn,
+    #header[data-mobile-hero="true"] .header-scrolled-search,
+    #header[data-mobile-hero="true"] .mobile-landscape-show { display: none !important; }
+    #header[data-mobile-hero="true"] #mobile-menu-button {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgb(255 255 255 / 40%);
+      color: white;
+      background: rgb(255 255 255 / 10%);
+    }
+    #header[data-mobile-hero="true"].scrolled #mobile-menu-button {
+      color: #244c32;
+      border-color: #d1d5db;
+    }
+  }
+  #header[data-mobile-hero="true"] #mobile-menu:not(.hidden) { display: block !important; }
 </style>
