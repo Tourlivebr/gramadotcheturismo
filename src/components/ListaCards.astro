@@ -1,0 +1,60 @@
+---
+interface Props {
+  id: string;
+  total: number;
+}
+const { id, total } = Astro.props;
+---
+
+<div data-card-list class="relative z-20 mx-auto w-full">
+  <div id={id} data-card-items class="grid grid-cols-1 lg:grid-cols-4 gap-6 px-3 pb-4">
+    <slot />
+  </div>
+  <div class="flex justify-center gap-3 mt-4 pb-6">
+    <button type="button" data-show-more aria-controls={id} hidden={total <= 4}
+      class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
+      Ver Mais
+    </button>
+    <button type="button" data-show-less aria-controls={id} hidden
+      class="border-2 border-primary-600 text-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 font-semibold py-3 px-6 rounded-xl transition-colors">
+      Ver Menos
+    </button>
+  </div>
+  <p data-card-status role="status" class="sr-only">Mostrando {Math.min(4, total)} de {total} cards</p>
+</div>
+
+<script>
+  function initCardLists() {
+    document.querySelectorAll<HTMLElement>('[data-card-list]').forEach((list) => {
+      if (list.dataset.initialized) return;
+      const items = Array.from(list.querySelector('[data-card-items]')?.children ?? []) as HTMLElement[];
+      const more = list.querySelector<HTMLButtonElement>('[data-show-more]');
+      const less = list.querySelector<HTMLButtonElement>('[data-show-less]');
+      const status = list.querySelector<HTMLElement>('[data-card-status]');
+      if (!more || !less) return;
+      list.dataset.initialized = 'true';
+      let visibleLimit = 4;
+
+      function update() {
+        items.forEach((item, index) => { item.hidden = index >= visibleLimit; });
+        more.hidden = visibleLimit >= items.length;
+        less.hidden = visibleLimit <= 4;
+        if (status) status.textContent = `Mostrando ${Math.min(visibleLimit, items.length)} de ${items.length} cards`;
+      }
+
+      more.addEventListener('click', () => {
+        visibleLimit += 4;
+        update();
+        if (more.hidden) less.focus();
+      });
+      less.addEventListener('click', () => {
+        visibleLimit = Math.max(4, visibleLimit - 4);
+        update();
+        if (less.hidden) more.focus();
+      });
+      update();
+    });
+  }
+  initCardLists();
+  document.addEventListener('astro:page-load', initCardLists);
+</script>
