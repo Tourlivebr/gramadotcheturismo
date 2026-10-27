@@ -2,6 +2,34 @@
 import ListaCards from './ListaCards.astro';
 const passeiosReceptivo = [
   {
+    id: 12,
+    title: "Transporte para O Grande Desfile de Natal",
+    subtitle: "Translado de ida e volta para O Grande Desfile de Natal na Expo Gramado",
+    category: "TRANSFER",
+    image: "https://cdn.ingressos.com.br/images/o-grande-desfile-de-natal/01.jpg",
+    price1: 200,
+    label1: "1 a 4 pessoas",
+    price2: 250,
+    label2: "5 a 6 pessoas",
+    slug: "transporte-grande-desfile-de-natal",
+    reservaUrl: "https://wa.me/5554996366980?text=" + encodeURIComponent("Olá! Quero reservar o Transporte para O Grande Desfile de Natal na Expo Gramado, ida e volta."),
+    whatsappText: "Olá! Quero reservar o Transporte para O Grande Desfile de Natal na Expo Gramado, ida e volta."
+  },
+  {
+    id: 11,
+    title: "Transporte para o Nativitaten",
+    subtitle: "Translado de ida e volta para o Nativitaten",
+    category: "TRANSFER",
+    image: "https://cdn.ingressos.com.br/images/nativitaten/01.jpg",
+    price1: 250,
+    label1: "1 a 4 pessoas",
+    price2: 350,
+    label2: "5 a 6 pessoas",
+    slug: "transporte-nativitaten",
+    reservaUrl: "https://wa.me/5554996366980?text=" + encodeURIComponent("Olá! Quero reservar o Transporte para o Nativitaten, ida e volta."),
+    whatsappText: "Olá! Quero reservar o Transporte para o Nativitaten, ida e volta."
+  },
+  {
     id: 1,
     title: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
     subtitle: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
@@ -191,7 +219,7 @@ const passeiosReceptivo = [
                     </div>
 
                     <a 
-                      href={`/passeio/${passeio.slug}`}
+                      href={passeio.reservaUrl || `/passeio/${passeio.slug}`}
                       class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md flex items-center justify-center"
                     >
                       RESERVE AGORA

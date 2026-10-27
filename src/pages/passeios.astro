@@ -7,6 +7,42 @@ import StarRating from '../components/StarRating.astro';
 // Dados dos passeios (RECEPTIVO / PASSEIOS PRIVATIVOS) — ORDEM atualizada com Transfer POA em 1º
 const passeios = [
   {
+    id: 12,
+    titulo: "Transporte para O Grande Desfile de Natal",
+    subtitulo: "Translado de ida e volta para O Grande Desfile de Natal na Expo Gramado",
+    categoria: "TRANSFER",
+    imagem: "https://cdn.ingressos.com.br/images/o-grande-desfile-de-natal/01.jpg",
+    avaliacao: null,
+    totalAvaliacoes: 0,
+    slug: "transporte-grande-desfile-de-natal",
+    reservaUrl: "https://wa.me/5554996366980?text=" + encodeURIComponent("Olá! Quero reservar o Transporte para O Grande Desfile de Natal na Expo Gramado, ida e volta."),
+    duracao: "Ida e volta",
+    price1: 200,
+    label1: "1 a 4 pessoas",
+    price2: 250,
+    label2: "5 a 6 pessoas",
+    whatsappText: "Olá! Quero reservar o Transporte para O Grande Desfile de Natal na Expo Gramado, ida e volta.",
+    tags: ["Ida e volta", "Expo Gramado"]
+  },
+  {
+    id: 11,
+    titulo: "Transporte para o Nativitaten",
+    subtitulo: "Translado de ida e volta para o Nativitaten",
+    categoria: "TRANSFER",
+    imagem: "https://cdn.ingressos.com.br/images/nativitaten/01.jpg",
+    avaliacao: null,
+    totalAvaliacoes: 0,
+    slug: "transporte-nativitaten",
+    reservaUrl: "https://wa.me/5554996366980?text=" + encodeURIComponent("Olá! Quero reservar o Transporte para o Nativitaten, ida e volta."),
+    duracao: "Ida e volta",
+    price1: 250,
+    label1: "1 a 4 pessoas",
+    price2: 350,
+    label2: "5 a 6 pessoas",
+    whatsappText: "Olá! Quero reservar o Transporte para o Nativitaten, ida e volta.",
+    tags: ["Ida e volta", "Nativitaten"]
+  },
+  {
     id: 1,
     titulo: "Transfer IDA e VOLTA • Porto Alegre / Gramado ou Canela",
     subtitulo: "Translado executivo de ida e volta entre Porto Alegre e Gramado/Canela",
@@ -262,17 +298,17 @@ const passeios = [
                     {passeio.categoria}
                   </span>
                 </div>
-                <div class="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow">
+                {passeio.avaliacao != null && <div class="absolute top-3 right-3 bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow">
                   ⭐ {passeio.avaliacao}
-                </div>
+                </div>}
               </div>
               
               <div class="p-4 lg:p-5 flex flex-col flex-1 gap-3">
                 <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-1">
+                  {passeio.avaliacao != null && <div class="flex items-center gap-1">
                     <StarRating rating={passeio.avaliacao} />
                     <span class="text-sm text-gray-500 dark:text-gray-400 ml-1 font-medium">({passeio.totalAvaliacoes})</span>
-                  </div>
+                  </div>}
                   <span class="text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     ⏱ {passeio.duracao}
                   </span>
@@ -312,7 +348,7 @@ const passeios = [
 
                 <div class="flex flex-col gap-2 mt-auto">
                   <a
-                    href={`/passeio/${passeio.slug}`}
+                    href={passeio.reservaUrl || `/passeio/${passeio.slug}`}
                     class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base shadow-md"
                   >
                     <span class="flex items-center justify-center">
@@ -321,7 +357,7 @@ const passeios = [
                   </a>
                   
                   <a
-                    href={`https://wa.me/5554993220552?text=${encodeURIComponent(passeio.whatsappText || `Olá! Gostaria de reservar o passeio: ${passeio.titulo}`)}`}
+                    href={`https://wa.me/5554996366980?text=${encodeURIComponent(passeio.whatsappText || `Olá! Gostaria de reservar o passeio: ${passeio.titulo}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     class="w-full border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-semibold py-3 px-4 rounded-xl transition-colors duration-200 block text-center text-base"
